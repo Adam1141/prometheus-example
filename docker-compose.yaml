@@ -1,4 +1,8 @@
 version: "3"
+
+volumes:
+  prometheus-data:
+    driver: local
 services:
   prometheus_service:
     image: prom/prometheus
@@ -6,8 +10,10 @@ services:
     ports:
       - 9090:9090
     volumes:
-      - ./prometheus-data:/prometheus-data
-    command: --config.file=/prometheus-data/prometheus.yml
+      - ./prometheus-config:/config
+      - prometheus-data:/prometheus
+    command: 
+      - '--config.file=/config/prometheus.yml'
 
   node_exporter:
     image: quay.io/prometheus/node-exporter:latest
